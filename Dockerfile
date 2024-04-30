@@ -1,29 +1,17 @@
-# Build image
-# Necessary dependencies to build Parrot
+# Adapted from Parrot's Dockerfile https://github.com/aquelemiguel/parrot/blob/fcf933818a5e754f5ad4217aec8bfb16935d7442/Dockerfile
+
 FROM rust:slim-bullseye as build
 
 RUN apt-get update && apt-get install -y \
-    build-essential autoconf automake cmake libtool libssl-dev pkg-config
-
-WORKDIR "/parrot"
-
-# Cache cargo build dependencies by creating a dummy source
-RUN mkdir src
-RUN echo "fn main() {}" > src/main.rs
-COPY Cargo.toml ./
-COPY Cargo.lock ./
-RUN cargo build --release --locked
-
-COPY . .
-RUN cargo build --release --locked
-
-# Release image
-# Necessary dependencies to run Parrot
-FROM debian:bullseye-slim
-
-RUN apt-get update && apt-get install -y python3-pip ffmpeg
+    build-essential autoconf automake cmake libtool libssl-dev pkg-config python3-pip ffmpeg
 RUN pip install -U yt-dlp
 
-COPY --from=build /parrot/target/release/parrot .
+WORKDIR "/usr/src/parrot"
+COPY . .
 
-CMD ["./parrot"]
+RUN cargo install --path .
+
+ENV DISCORD_TOKEN=<TODO>
+ENV DISCORD_APP_ID=<TODO>
+
+CMD ["parrot"]
