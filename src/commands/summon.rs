@@ -53,7 +53,7 @@ pub async fn summon(
                 http: ctx.http.clone(),
                 manager,
                 interaction: interaction.clone(),
-                limit: 60 * 10,
+                limit: 60 * 30,
                 count: Default::default(),
             },
         );
