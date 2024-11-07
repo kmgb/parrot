@@ -22,7 +22,10 @@ Just [create a bot account](https://github.com/aquelemiguel/parrot/wiki/Create-Y
 ### Docker
 
 ```shell
-docker run -d --env-file .env --restart unless-stopped --name parrot ghcr.io/aquelemiguel/parrot:latest
+docker build -t parrot-discord-bot:latest .
+```
+```shell
+docker run -d --restart unless-stopped --env-file .env --name parrot-discord-bot parrot-discord-bot:latest
 ```
 
 ## Development

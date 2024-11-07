@@ -18,8 +18,4 @@ RUN pip install -U yt-dlp --break-system-packages --no-cache-dir
 
 COPY --from=builder /usr/local/cargo/bin/parrot /usr/local/bin/parrot
 
-RUN --mount=type=secret,id=DISCORD_TOKEN --mount=type=secret,id=DISCORD_APP_ID \
-    echo "DISCORD_TOKEN=$(cat /run/secrets/DISCORD_TOKEN)" > /.env && \
-    echo "DISCORD_APP_ID=$(cat /run/secrets/DISCORD_APP_ID)" >> /.env
-
 CMD ["parrot"]
