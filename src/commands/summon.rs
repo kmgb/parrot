@@ -15,6 +15,8 @@ use serenity::{
 use songbird::{Event, TrackEvent};
 use std::time::Duration;
 
+const IDLE_DISCONNECT_SECS: usize = 30 * 60; // 30 minutes
+
 pub async fn summon(
     ctx: &Context,
     interaction: &mut ApplicationCommandInteraction,
@@ -53,7 +55,7 @@ pub async fn summon(
                 http: ctx.http.clone(),
                 manager,
                 interaction: interaction.clone(),
-                limit: 60 * 10,
+                limit: IDLE_DISCONNECT_SECS,
                 count: Default::default(),
             },
         );
