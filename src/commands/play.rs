@@ -25,6 +25,8 @@ use songbird::{input::Restartable, tracks::TrackHandle, Call};
 use std::{cmp::Ordering, error::Error as StdError, sync::Arc, time::Duration};
 use url::Url;
 
+const PLAY_VOLUME: f32 = 0.5;
+
 #[derive(Clone, Copy)]
 pub enum Mode {
     End,
@@ -417,7 +419,9 @@ async fn enqueue_track(
     let source = get_track_source(query_type.clone()).await?;
 
     let mut handler = call.lock().await;
-    handler.enqueue_source(source.into());
+    let _ = handler
+        .enqueue_source(source.into())
+        .set_volume(PLAY_VOLUME);
 
     Ok(handler.queue().current_queue())
 }
