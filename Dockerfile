@@ -13,8 +13,11 @@ RUN cargo install --path .
 # Necessary dependencies to run Parrot
 FROM debian:bookworm-slim 
 
-RUN apt-get update && apt-get install -y python3-pip ffmpeg && rm -rf /var/lib/apt/lists/*
-RUN pip install -U yt-dlp --break-system-packages --no-cache-dir
+RUN apt-get update && apt-get install -y ffmpeg wget && rm -rf /var/lib/apt/lists/*
+
+# Install yt-dlp
+RUN wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp
 
 COPY --from=builder /usr/local/cargo/bin/parrot /usr/local/bin/parrot
 
